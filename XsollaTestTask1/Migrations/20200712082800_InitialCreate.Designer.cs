@@ -10,7 +10,7 @@ using XsollaTestTask1.Contexts;
 namespace XsollaTestTask1.Migrations
 {
     [DbContext(typeof(PaymentSessionDBContext))]
-    [Migration("20200711171134_InitialCreate")]
+    [Migration("20200712082800_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

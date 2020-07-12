@@ -28,8 +28,11 @@ namespace XsollaTestTask1
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
-            services.AddDbContext<PaymentSessionDBContext>(options
-                => options.UseSqlServer(Configuration.GetConnectionString("PaymentSessionContext")));
+            services
+                .AddDbContext<PaymentSessionDBContext>(options
+                    => options.UseSqlServer(Configuration.GetConnectionString("PaymentSessionContext")))    
+                .AddDbContext<ReceiptDBContext>(options
+                    => options.UseSqlServer(Configuration.GetConnectionString("ReceiptsContext")));
             //services.AddDbContext<PaymentSessionDBContext>(option => option.UseInMemoryDatabase("Sessions"));
         }
 

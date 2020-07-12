@@ -15,20 +15,16 @@ namespace XsollaTestTask1.Controllers
     public class PaymentController : ControllerBase
     {
         private readonly PaymentSessionDBContext paymentSessionDBContext;
+        private readonly ReceiptDBContext receiptDBContext;
         private readonly string sellerName = "www.randomshop.com";
 
-        public PaymentController(PaymentSessionDBContext paymentSessionDBContext)
+        public PaymentController(PaymentSessionDBContext paymentSessionDBContext, ReceiptDBContext receiptDBContext)
         {
             this.paymentSessionDBContext = paymentSessionDBContext;
+            this.receiptDBContext = receiptDBContext;
         }
 
-        [HttpGet]
-        public ActionResult Test()
-        {
-            return Ok("Test");
-        }
-
-        [HttpPost]
+        [HttpPost("CreateSession")]
         public ActionResult CreateSession(int sum, string appointment)
         {
             //validation code
@@ -50,7 +46,7 @@ namespace XsollaTestTask1.Controllers
 
             return Ok(paymentSession.SessionId);
         }
-
+        [HttpPost("Pay")]
         public ActionResult Payment(CreditCard creditCard, Guid sessionId)
         {
             //validation code
@@ -69,7 +65,7 @@ namespace XsollaTestTask1.Controllers
             };
 
             //code to add the receipt to db
-
+            
             return Ok();
         }
     }
