@@ -64,8 +64,9 @@ namespace XsollaTestTask1.Controllers
                 Seller = session.Seller
             };
 
-            //code to add the receipt to db
-            
+            receiptDBContext.Add<Receipt>(receipt);
+            receiptDBContext.SaveChanges();
+
             return Ok();
         }
     }
