@@ -14,6 +14,6 @@ namespace XsollaTestTask1.Contexts
         {
         }
 
-        public Receipt Receipts { get; set; }
+        public DbSet<Receipt> Receipts { get; set; }
     }
 }

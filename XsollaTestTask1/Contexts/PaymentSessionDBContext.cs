@@ -9,8 +9,6 @@ namespace XsollaTestTask1.Contexts
 {
     public class PaymentSessionDBContext : DbContext
     {
-
-
         public PaymentSessionDBContext(DbContextOptions<PaymentSessionDBContext> options) : base(options)
         {
         }
