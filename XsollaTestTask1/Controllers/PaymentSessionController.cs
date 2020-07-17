@@ -16,7 +16,6 @@ namespace XsollaTestTask1.Controllers
     public class PaymentSessionController : ControllerBase
     {
         private readonly PaymentSessionDBContext paymentSessionDBContext;
-        private readonly string sellerName = "www.randomshop.com";
 
         public PaymentSessionController(PaymentSessionDBContext paymentSessionDBContext)
         {
@@ -24,8 +23,13 @@ namespace XsollaTestTask1.Controllers
         }
 
         [HttpPost]
-        public ActionResult CreateSession([FromBody]PaymentSessionInputInfo info)
+        public async Task<ActionResult<Guid>> CreateSession([FromBody]PaymentSessionInputInfo info) // Make it async
         {
+            if(info == null)
+            {
+                return BadRequest();
+            }
+
             PaymentSession paymentSession = new PaymentSession
             {
                 Cost = info.Sum,
@@ -33,19 +37,13 @@ namespace XsollaTestTask1.Controllers
                 PaymentAppointment = info.PaymentAppointement,
                 SessionRegistrationTime = DateTime.Now,
                 LifeSpanInMinute = 60,
-                Seller = sellerName
+                Seller = info.Seller
             };
 
             paymentSessionDBContext.PaymentSessions.Add(paymentSession);
-            paymentSessionDBContext.SaveChanges();
+            await paymentSessionDBContext.SaveChangesAsync();
 
             return Ok(paymentSession.SessionId);
-        }
-
-        [HttpGet]
-        public ActionResult GetSessions()
-        {
-            return Ok(paymentSessionDBContext.PaymentSessions);
         }
     }
 }

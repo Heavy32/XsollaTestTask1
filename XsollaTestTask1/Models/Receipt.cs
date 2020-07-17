@@ -11,6 +11,7 @@ namespace XsollaTestTask1.Models
         public DateTime OperationTime { get; set; }
         public string Seller { get; set; }
         public string CustomerName { get; set; }
-        public string Good { get; set; }
+        public string Product { get; set; }
+        public double Cost { get; set; }
     }
 }

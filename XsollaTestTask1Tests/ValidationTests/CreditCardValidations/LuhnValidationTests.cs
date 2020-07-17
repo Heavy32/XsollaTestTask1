@@ -2,11 +2,12 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using XsollaTestTask1.Models;
 
-namespace XsollaTestTask1.Models.Tests
+namespace XsollaTestTask1.ValidationTests.Tests
 {
-    [TestFixture]
-    public class LuhnValidationCreditCardTests
+
+    public class LuhnValidationTests
     {
         [TestCase("67619600 0494451892")]
         [TestCase("67628038 8885503265")]
