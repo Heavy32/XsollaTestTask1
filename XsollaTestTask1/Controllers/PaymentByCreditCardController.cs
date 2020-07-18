@@ -37,7 +37,7 @@ namespace XsollaTestTask1.Controllers
         [HttpPost]
         [ProducesResponseType(400)]
         [ProducesResponseType(200)]
-        public async Task<ActionResult> PayWithCreditCard(PaymentInputInfo info)
+        public async Task<ActionResult> PayByCreditCard(PaymentInputInfo info)
         {            
             var paymentSession = await context.PaymentSessions.FirstOrDefaultAsync(session => session.SessionId == info.SessionId);
 

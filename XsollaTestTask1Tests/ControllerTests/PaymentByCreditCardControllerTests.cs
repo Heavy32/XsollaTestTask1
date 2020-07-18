@@ -137,7 +137,7 @@ namespace XsollaTestTask1Tests.ControllerTests
 
 
             //Act
-            await controller.PayWithCreditCard(paymentInfo);
+            await controller.PayByCreditCard(paymentInfo);
             var count = context.Receipts.Count();
 
 
@@ -181,7 +181,7 @@ namespace XsollaTestTask1Tests.ControllerTests
 
 
             //Act
-            var response = await controller.PayWithCreditCard(paymentInfo);
+            var response = await controller.PayByCreditCard(paymentInfo);
             var count = context.Receipts.Count();
 
 
