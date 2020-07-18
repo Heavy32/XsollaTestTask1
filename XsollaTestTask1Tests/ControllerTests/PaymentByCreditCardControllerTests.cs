@@ -1,10 +1,7 @@
 ﻿using NUnit.Framework;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 using System.Linq;
-using System.Web.Http.Results;
 using XsollaTestTask1.Controllers;
 using XsollaTestTask1.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -116,7 +113,6 @@ namespace XsollaTestTask1Tests.ControllerTests
                 PaymentAppointment = "Item1",
                 LifeSpanInMinute = 60,
                 SessionRegistrationTime = DateTime.Now.AddMinutes(-30),
-                Seller = "www.google.com",
                 SessionId = new Guid("ebd21f99-46a5-438f-8d6c-7e0a259b278e")
             });
 
@@ -135,13 +131,17 @@ namespace XsollaTestTask1Tests.ControllerTests
             var paymentInfo = new PaymentInputInfo 
             { 
                 card = card, 
-                SessionId = new Guid("ebd21f99-46a5-438f-8d6c-7e0a259b278e") 
+                SessionId = new Guid("ebd21f99-46a5-438f-8d6c-7e0a259b278e"),
+                Seller = "www.google.com"
             };
+
 
             //Act
             await controller.PayWithCreditCard(paymentInfo);
             var count = context.Receipts.Count();
 
+
+            //Assert
             Assert.AreEqual(1, count);
         }
 
@@ -158,7 +158,6 @@ namespace XsollaTestTask1Tests.ControllerTests
                 PaymentAppointment = "Item1",
                 LifeSpanInMinute = 60,
                 SessionRegistrationTime = DateTime.Now.AddMinutes(-90),
-                Seller = "www.randomshop.com",
                 SessionId = new Guid("ebd21f99-46a5-438f-8d6c-7e0a259b278e")
             });
 
@@ -177,12 +176,15 @@ namespace XsollaTestTask1Tests.ControllerTests
             var paymentInfo = new PaymentInputInfo
             {
                 card = card,
-                SessionId = new Guid("ebd21f99-46a5-438f-8d6c-7e0a259b278e")
+                SessionId = new Guid("ebd21f99-46a5-438f-8d6c-7e0a259b278e"),
+                Seller = "www.google.com"
             };
+
 
             //Act
             var response = await controller.PayWithCreditCard(paymentInfo);
             var count = context.Receipts.Count();
+
 
             //Assert
             Assert.AreEqual(0, count);
