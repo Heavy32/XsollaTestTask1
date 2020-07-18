@@ -5,6 +5,7 @@ using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -28,8 +29,11 @@ namespace XsollaTestTask1.Controllers
             this.paymentSessionDBContext = paymentSessionDBContext;
         }
 
-        [Authorize]
+
         [HttpGet]
+        [ProducesResponseType(401)]
+        [ProducesResponseType(typeof(Receipt), 200)]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<ActionResult<List<Receipt>>> GetAllPaymentHistory(int periodInDays)
         {
             DateTime selectionStartTime = DateTime.Now.AddDays(-periodInDays);
@@ -38,6 +42,8 @@ namespace XsollaTestTask1.Controllers
         }
 
         [HttpPost]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(200)]
         public async Task<ActionResult> PayWithCreditCard(PaymentInputInfo info)
         {            
             var paymentSession = await paymentSessionDBContext.PaymentSessions.FirstOrDefaultAsync(session => session.SessionId == info.SessionId);

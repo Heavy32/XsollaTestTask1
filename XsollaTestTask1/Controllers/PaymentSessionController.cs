@@ -23,7 +23,9 @@ namespace XsollaTestTask1.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<Guid>> CreateSession([FromBody]PaymentSessionInputInfo info) // Make it async
+        [ProducesResponseType(400)]
+        [ProducesResponseType(typeof(Guid), 200)]
+        public async Task<ActionResult<Guid>> CreateSession([FromBody]PaymentSessionInputInfo info)
         {
             if(info == null)
             {
