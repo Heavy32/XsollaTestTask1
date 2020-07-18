@@ -5,21 +5,12 @@ namespace XsollaTestTask1Tests.ControllerTests
 {
     public static class ContextBuilder
     {
-        public static PaymentSessionDBContext BuildPaymentSessionContext(string databaseName)
+        public static PaymentDbContext BuildContext(string databaseName)
         {
-            var options = new DbContextOptionsBuilder<PaymentSessionDBContext>()
+            var options = new DbContextOptionsBuilder<PaymentDbContext>()
                 .UseInMemoryDatabase(databaseName).Options;
 
-            var dbContext = new PaymentSessionDBContext(options);
-            return dbContext;
-        }
-
-        public static ReceiptDBContext BuildReceiptContext(string databaseName)
-        {
-            var options = new DbContextOptionsBuilder<ReceiptDBContext>()
-                .UseInMemoryDatabase(databaseName).Options;
-
-            var dbContext = new ReceiptDBContext(options);
+            var dbContext = new PaymentDbContext(options);
             return dbContext;
         }
     }

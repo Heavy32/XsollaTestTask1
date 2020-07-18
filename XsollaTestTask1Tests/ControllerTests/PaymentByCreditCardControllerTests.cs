@@ -17,9 +17,9 @@ namespace XsollaTestTask1Tests.ControllerTests
         public async Task Get_All_Payment_History_For_1_Day_Return_3_Receipts()
         {
             //Arrange
-            var databaseName1 = Guid.NewGuid().ToString();
-            var context1 = ContextBuilder.BuildReceiptContext(databaseName1);
-            context1.Receipts.Add(new Receipt
+            var databaseName = Guid.NewGuid().ToString();
+            var context = ContextBuilder.BuildContext(databaseName);
+            context.Receipts.Add(new Receipt
             {
                 Id = Guid.NewGuid(),
                 Cost = 200,
@@ -28,7 +28,7 @@ namespace XsollaTestTask1Tests.ControllerTests
                 OperationTime = DateTime.Now.AddHours(-5)
             });
 
-            context1.Receipts.Add(new Receipt
+            context.Receipts.Add(new Receipt
             {
                 Id = Guid.NewGuid(),
                 Cost = 200,
@@ -37,7 +37,7 @@ namespace XsollaTestTask1Tests.ControllerTests
                 OperationTime = DateTime.Now.AddHours(-15)
             });
 
-            context1.Receipts.Add(new Receipt
+            context.Receipts.Add(new Receipt
             {
                 Id = Guid.NewGuid(),
                 Cost = 200,
@@ -46,12 +46,9 @@ namespace XsollaTestTask1Tests.ControllerTests
                 OperationTime = DateTime.Now.AddHours(-10)
             });
 
-            await context1.SaveChangesAsync();
+            await context.SaveChangesAsync();
 
-            var databaseName2 = Guid.NewGuid().ToString();
-            var context2 = ContextBuilder.BuildPaymentSessionContext(databaseName2);
-
-            var controller = new PaymentByCreditCardController(context1, context2);
+            var controller = new PaymentByCreditCardController(context);
 
             //Act 
             var response = await controller.GetAllPaymentHistory(1);
@@ -66,8 +63,8 @@ namespace XsollaTestTask1Tests.ControllerTests
         {
             //Arrange
             var databaseName1 = Guid.NewGuid().ToString();
-            var context1 = ContextBuilder.BuildReceiptContext(databaseName1);
-            context1.Receipts.Add(new Receipt
+            var context = ContextBuilder.BuildContext(databaseName1);
+            context.Receipts.Add(new Receipt
             {
                 Id = Guid.NewGuid(),
                 Cost = 200,
@@ -76,7 +73,7 @@ namespace XsollaTestTask1Tests.ControllerTests
                 OperationTime = DateTime.Now.AddDays(-5)
             });
 
-            context1.Receipts.Add(new Receipt
+            context.Receipts.Add(new Receipt
             {
                 Id = Guid.NewGuid(),
                 Cost = 200,
@@ -85,7 +82,7 @@ namespace XsollaTestTask1Tests.ControllerTests
                 OperationTime = DateTime.Now.AddDays(-15)
             });
 
-            context1.Receipts.Add(new Receipt
+            context.Receipts.Add(new Receipt
             {
                 Id = Guid.NewGuid(),
                 Cost = 200,
@@ -94,12 +91,9 @@ namespace XsollaTestTask1Tests.ControllerTests
                 OperationTime = DateTime.Now.AddDays(-10)
             });
 
-            await context1.SaveChangesAsync();
+            await context.SaveChangesAsync();
 
-            var databaseName2 = Guid.NewGuid().ToString();
-            var context2 = ContextBuilder.BuildPaymentSessionContext(databaseName2);
-
-            var controller = new PaymentByCreditCardController(context1, context2);
+            var controller = new PaymentByCreditCardController(context);
 
             //Act 
             var response = await controller.GetAllPaymentHistory(1);
@@ -113,25 +107,22 @@ namespace XsollaTestTask1Tests.ControllerTests
         public async Task Successful_Payment()
         {
             //Arrange
-            var sessionDatabaseName = Guid.NewGuid().ToString();
-            var sessionContext = ContextBuilder.BuildPaymentSessionContext(sessionDatabaseName);
+            var databaseName = Guid.NewGuid().ToString();
+            var context = ContextBuilder.BuildContext(databaseName);
 
-            var receiptDatabaseName = Guid.NewGuid().ToString();
-            var receiptContext = ContextBuilder.BuildReceiptContext(receiptDatabaseName);
-
-            sessionContext.PaymentSessions.Add(new PaymentSession
+            context.PaymentSessions.Add(new PaymentSession
             {
                 Cost = 200,
                 PaymentAppointment = "Item1",
                 LifeSpanInMinute = 60,
                 SessionRegistrationTime = DateTime.Now.AddMinutes(-30),
-                Seller = "www.randomshop.com",
+                Seller = "www.google.com",
                 SessionId = new Guid("ebd21f99-46a5-438f-8d6c-7e0a259b278e")
             });
 
-            await sessionContext.SaveChangesAsync();
+            await context.SaveChangesAsync();
 
-            var controller = new PaymentByCreditCardController(receiptContext, sessionContext);
+            var controller = new PaymentByCreditCardController(context);
 
             CreditCard card = new CreditCard
             {
@@ -149,7 +140,7 @@ namespace XsollaTestTask1Tests.ControllerTests
 
             //Act
             await controller.PayWithCreditCard(paymentInfo);
-            var count = receiptContext.Receipts.Count();
+            var count = context.Receipts.Count();
 
             Assert.AreEqual(1, count);
         }
@@ -158,13 +149,10 @@ namespace XsollaTestTask1Tests.ControllerTests
         public async Task Unsuccessful_Payment_Session_Is_Over()
         {
             //Arrange
-            var sessionDatabaseName = Guid.NewGuid().ToString();
-            var sessionContext = ContextBuilder.BuildPaymentSessionContext(sessionDatabaseName);
+            var DatabaseName = Guid.NewGuid().ToString();
+            var context = ContextBuilder.BuildContext(DatabaseName);
 
-            var receiptDatabaseName = Guid.NewGuid().ToString();
-            var receiptContext = ContextBuilder.BuildReceiptContext(receiptDatabaseName);
-
-            sessionContext.PaymentSessions.Add(new PaymentSession
+            context.PaymentSessions.Add(new PaymentSession
             {
                 Cost = 200,
                 PaymentAppointment = "Item1",
@@ -174,9 +162,9 @@ namespace XsollaTestTask1Tests.ControllerTests
                 SessionId = new Guid("ebd21f99-46a5-438f-8d6c-7e0a259b278e")
             });
 
-            await sessionContext.SaveChangesAsync();
+            await context.SaveChangesAsync();
 
-            var controller = new PaymentByCreditCardController(receiptContext, sessionContext);
+            var controller = new PaymentByCreditCardController(context);
 
             CreditCard card = new CreditCard
             {
@@ -194,7 +182,7 @@ namespace XsollaTestTask1Tests.ControllerTests
 
             //Act
             var response = await controller.PayWithCreditCard(paymentInfo);
-            var count = receiptContext.Receipts.Count();
+            var count = context.Receipts.Count();
 
             //Assert
             Assert.AreEqual(0, count);

@@ -19,7 +19,7 @@ namespace XsollaTestTask1Tests.ControllerTests
         {
             //Arrange
             var databaseName = Guid.NewGuid().ToString();
-            var context = ContextBuilder.BuildPaymentSessionContext(databaseName);         
+            var context = ContextBuilder.BuildContext(databaseName);         
             var controller = new PaymentSessionController(context);
 
             //Action
@@ -34,7 +34,7 @@ namespace XsollaTestTask1Tests.ControllerTests
         {
             //arrange
             var databaseName = Guid.NewGuid().ToString();
-            var context = ContextBuilder.BuildPaymentSessionContext(databaseName);
+            var context = ContextBuilder.BuildContext(databaseName);
             var controller = new PaymentSessionController(context);
 
             //act

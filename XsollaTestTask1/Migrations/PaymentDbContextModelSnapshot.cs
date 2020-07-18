@@ -3,17 +3,15 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using XsollaTestTask1.Contexts;
 
-namespace XsollaTestTask1.Migrations.ReceiptDB
+namespace XsollaTestTask1.Migrations
 {
-    [DbContext(typeof(ReceiptDBContext))]
-    [Migration("20200718095616_IdentityTables")]
-    partial class IdentityTables
+    [DbContext(typeof(PaymentDbContext))]
+    partial class PaymentDbContextModelSnapshot : ModelSnapshot
     {
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -215,6 +213,32 @@ namespace XsollaTestTask1.Migrations.ReceiptDB
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens");
+                });
+
+            modelBuilder.Entity("XsollaTestTask1.Models.PaymentSession", b =>
+                {
+                    b.Property<Guid>("SessionId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<double>("Cost")
+                        .HasColumnType("float");
+
+                    b.Property<int>("LifeSpanInMinute")
+                        .HasColumnType("int");
+
+                    b.Property<string>("PaymentAppointment")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Seller")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("SessionRegistrationTime")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("SessionId");
+
+                    b.ToTable("PaymentSessions");
                 });
 
             modelBuilder.Entity("XsollaTestTask1.Models.Receipt", b =>

@@ -33,7 +33,7 @@ namespace XsollaTestTask1
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddIdentity<IdentityUser, IdentityRole>()
-                .AddEntityFrameworkStores<ReceiptDBContext>()
+                .AddEntityFrameworkStores<PaymentDbContext>()
                 .AddDefaultTokenProviders();
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -50,17 +50,13 @@ namespace XsollaTestTask1
 
             services.AddControllers();
             services
-                .AddDbContext<PaymentSessionDBContext>(options
-                    => options.UseSqlServer(Configuration.GetConnectionString("PaymentSessionContext")))    
-                .AddDbContext<ReceiptDBContext>(options
-                    => options.UseSqlServer(Configuration.GetConnectionString("ReceiptsContext")));
+                .AddDbContext<PaymentDbContext>(options
+                    => options.UseSqlServer(Configuration.GetConnectionString("PaymentContext")));  
 
             services.AddSwaggerGen(config =>
             {
                 config.SwaggerDoc("v1", new OpenApiInfo { Version = "v1", Title = "TestTask1" });
-            });
-            
-            //services.AddDbContext<PaymentSessionDBContext>(option => option.UseInMemoryDatabase("Sessions"));
+            });           
         }
 
             // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

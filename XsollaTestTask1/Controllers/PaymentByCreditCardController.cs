@@ -1,18 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
 using System.Net.Http;
-using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using XsollaTestTask1.Contexts;
 using XsollaTestTask1.Models;
-
 
 namespace XsollaTestTask1.Controllers
 {
@@ -20,15 +16,12 @@ namespace XsollaTestTask1.Controllers
     [ApiController]
     public class PaymentByCreditCardController : ControllerBase
     {
-        private readonly ReceiptDBContext receiptDBContext;
-        private readonly PaymentSessionDBContext paymentSessionDBContext;
+        private readonly PaymentDbContext context;
 
-        public PaymentByCreditCardController(ReceiptDBContext receiptDBContext, PaymentSessionDBContext paymentSessionDBContext)
+        public PaymentByCreditCardController(PaymentDbContext context)
         {
-            this.receiptDBContext = receiptDBContext;
-            this.paymentSessionDBContext = paymentSessionDBContext;
+            this.context = context;
         }
-
 
         [HttpGet]
         [ProducesResponseType(401)]
@@ -37,7 +30,7 @@ namespace XsollaTestTask1.Controllers
         public async Task<ActionResult<List<Receipt>>> GetAllPaymentHistory(int periodInDays)
         {
             DateTime selectionStartTime = DateTime.Now.AddDays(-periodInDays);
-            var receipts = await receiptDBContext.Receipts.Where(receipt => receipt.OperationTime >= selectionStartTime).ToListAsync();
+            var receipts = await context.Receipts.Where(receipt => receipt.OperationTime >= selectionStartTime).ToListAsync();
             return receipts;
         }
 
@@ -46,7 +39,7 @@ namespace XsollaTestTask1.Controllers
         [ProducesResponseType(200)]
         public async Task<ActionResult> PayWithCreditCard(PaymentInputInfo info)
         {            
-            var paymentSession = await paymentSessionDBContext.PaymentSessions.FirstOrDefaultAsync(session => session.SessionId == info.SessionId);
+            var paymentSession = await context.PaymentSessions.FirstOrDefaultAsync(session => session.SessionId == info.SessionId);
 
             if(paymentSession.SessionRegistrationTime.AddMinutes(paymentSession.LifeSpanInMinute) < DateTime.Now)
             {            
@@ -59,13 +52,13 @@ namespace XsollaTestTask1.Controllers
                 CustomerName = info.card.HolderName,
                 Product = paymentSession.PaymentAppointment,
                 OperationTime = DateTime.Now,
-                Seller = paymentSession.Seller,
+                Seller = info.Seller,
                 Cost = paymentSession.Cost              
             };
 
-            paymentSessionDBContext.PaymentSessions.Remove(paymentSession);
-            receiptDBContext.Receipts.Add(receipt);
-            await receiptDBContext.SaveChangesAsync();
+            context.PaymentSessions.Remove(paymentSession);
+            context.Receipts.Add(receipt);
+            await context.SaveChangesAsync();
 
             await SendNotificationToShop(receipt);
 
@@ -84,7 +77,11 @@ namespace XsollaTestTask1.Controllers
             };
 
             var content = new FormUrlEncodedContent(values);
-            await client.PostAsync(url, content);
+
+            if (Uri.TryCreate(url, UriKind.Absolute, out Uri uri))
+            {
+                await client.PostAsync(uri, content);
+            }
         }
     }
 }

@@ -1,21 +1,12 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace XsollaTestTask1.Migrations.ReceiptDB
+namespace XsollaTestTask1.Migrations
 {
-    public partial class IdentityTables : Migration
+    public partial class InitialCreate : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropColumn(
-                name: "Good",
-                table: "Receipts");
-
-            migrationBuilder.AddColumn<string>(
-                name: "Product",
-                table: "Receipts",
-                nullable: true);
-
             migrationBuilder.CreateTable(
                 name: "AspNetRoles",
                 columns: table => new
@@ -53,6 +44,38 @@ namespace XsollaTestTask1.Migrations.ReceiptDB
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "PaymentSessions",
+                columns: table => new
+                {
+                    SessionId = table.Column<Guid>(nullable: false),
+                    Cost = table.Column<double>(nullable: false),
+                    PaymentAppointment = table.Column<string>(nullable: true),
+                    SessionRegistrationTime = table.Column<DateTime>(nullable: false),
+                    LifeSpanInMinute = table.Column<int>(nullable: false),
+                    Seller = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PaymentSessions", x => x.SessionId);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Receipts",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(nullable: false),
+                    OperationTime = table.Column<DateTime>(nullable: false),
+                    Seller = table.Column<string>(nullable: true),
+                    CustomerName = table.Column<string>(nullable: true),
+                    Product = table.Column<string>(nullable: true),
+                    Cost = table.Column<double>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Receipts", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -219,20 +242,16 @@ namespace XsollaTestTask1.Migrations.ReceiptDB
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "PaymentSessions");
+
+            migrationBuilder.DropTable(
+                name: "Receipts");
+
+            migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
-
-            migrationBuilder.DropColumn(
-                name: "Product",
-                table: "Receipts");
-
-            migrationBuilder.AddColumn<string>(
-                name: "Good",
-                table: "Receipts",
-                type: "nvarchar(max)",
-                nullable: true);
         }
     }
 }
