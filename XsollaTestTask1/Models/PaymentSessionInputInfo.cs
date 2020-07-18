@@ -10,7 +10,5 @@ namespace XsollaTestTask1.Models
         public double Sum { get; set; }
         [Required(ErrorMessage = "You must enter the payment appointemnt")]
         public string PaymentAppointement { get; set; }
-        [Required(ErrorMessage = "You must enter the seller")]
-        public string Seller { get; set; }
     }
 }

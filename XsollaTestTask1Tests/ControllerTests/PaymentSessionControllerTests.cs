@@ -1,14 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using XsollaTestTask1.Controllers;
-using Xunit;
 using XsollaTestTask1.Models;
 using Microsoft.AspNetCore.Mvc;
 using NUnit.Framework;
-using System.Web.Mvc;
 
 namespace XsollaTestTask1Tests.ControllerTests
 {
@@ -23,7 +18,7 @@ namespace XsollaTestTask1Tests.ControllerTests
             var controller = new PaymentSessionController(context);
 
             //Action
-            var result = await controller.CreateSession(new PaymentSessionInputInfo { PaymentAppointement = "Beer", Seller = "Lion", Sum = 50 });
+            var result = await controller.CreateSession(new PaymentSessionInputInfo { PaymentAppointement = "Beer", Sum = 50 });
 
             //Assert
             Assert.IsNotNull(result);

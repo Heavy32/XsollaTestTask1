@@ -177,7 +177,6 @@ namespace XsollaTestTask1Tests.ControllerTests
             {
                 card = card,
                 SessionId = new Guid("ebd21f99-46a5-438f-8d6c-7e0a259b278e"),
-                Seller = "www.google.com"
             };
 
 

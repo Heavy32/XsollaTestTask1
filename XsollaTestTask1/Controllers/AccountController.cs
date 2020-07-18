@@ -12,7 +12,7 @@ using XsollaTestTask1.Models;
 
 namespace XsollaTestTask1.Controllers
 {
-    [Route("api/accounts")]
+    [Route("api/[controller]")]
     [ApiController]
     public class AccountController : ControllerBase
     {
