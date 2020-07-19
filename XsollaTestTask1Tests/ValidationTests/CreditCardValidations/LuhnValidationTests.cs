@@ -3,7 +3,6 @@ using XsollaTestTask1.Models;
 
 namespace XsollaTestTask1.ValidationTests.Tests
 {
-
     public class LuhnValidationTests
     {
         [TestCase("67619600 0494451892")]

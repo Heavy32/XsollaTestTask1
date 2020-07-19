@@ -14,7 +14,7 @@ namespace XsollaTestTask1.Controllers
 
         public PaymentSessionController(PaymentDbContext paymentSessionDBContext)
         {
-            this.context = paymentSessionDBContext;
+            context = paymentSessionDBContext;
         }
 
         [HttpPost]
