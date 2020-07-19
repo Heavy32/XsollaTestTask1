@@ -16,7 +16,7 @@ namespace XsollaTestTask1Tests.ValidationTests.CreditCardValidation
         [TestCase("00101 1100 00001 001")]
         public void WrongCreditCardNumbersCount(string number)
         {
-            //arrange
+            //Arrange
             CreditCard creditCard = new CreditCard
             {
                 Number = number,
@@ -28,11 +28,11 @@ namespace XsollaTestTask1Tests.ValidationTests.CreditCardValidation
             var context = new ValidationContext(creditCard);
             var results = new List<ValidationResult>();
 
-            //act
+            //Act
             Validator.TryValidateObject(creditCard, context, results);
             var errorMessage = results[0].ErrorMessage;
 
-            //assert
+            //Assert
             Assert.AreEqual(errorMessage, "Incorrect numbers' count");
         }
 
@@ -42,7 +42,7 @@ namespace XsollaTestTask1Tests.ValidationTests.CreditCardValidation
         [TestCase("1111 2222 3333 444z")]
         public void WrongSymbolsInCardNumbersCount(string number)
         {
-            //arrange
+            //Arrange
             CreditCard creditCard = new CreditCard
             {
                 Number = number,
@@ -54,18 +54,18 @@ namespace XsollaTestTask1Tests.ValidationTests.CreditCardValidation
             var context = new ValidationContext(creditCard);
             var results = new List<ValidationResult>();
 
-            //act
+            //Act
             Validator.TryValidateObject(creditCard, context, results);
             var errorMessage = results[0].ErrorMessage;
 
-            //assert
+            //Assert
             Assert.AreEqual(errorMessage, "Card number contains wrong symbols");
         }
 
         [TestCaseSource("wrongExpirationDates")]
         public void ExpirationDateIsOver(DateTime expirationDate)
         {
-            //arrange
+            //Arrange
             CreditCard creditCard = new CreditCard
             {
                 Number = "1111 2222 3333 4444",
@@ -77,11 +77,11 @@ namespace XsollaTestTask1Tests.ValidationTests.CreditCardValidation
             var context = new ValidationContext(creditCard);
             var results = new List<ValidationResult>();
 
-            //act
+            //Act
             Validator.TryValidateObject(creditCard, context, results);
             var errorMessage = results[0].ErrorMessage;
 
-            //assert
+            //Assert
             Assert.AreEqual(errorMessage, "Card is not support due to the expiration date has been out");
         }
 
@@ -104,7 +104,7 @@ namespace XsollaTestTask1Tests.ValidationTests.CreditCardValidation
         [TestCase("lol")]
         public void CVVWrongInput(string cvv)
         {
-            //arrange
+            //Arrange
             CreditCard creditCard = new CreditCard
             {
                 Number = "1111 2222 3333 4444",
@@ -116,11 +116,11 @@ namespace XsollaTestTask1Tests.ValidationTests.CreditCardValidation
             var context = new ValidationContext(creditCard);
             var results = new List<ValidationResult>();
 
-            //act
+            //Act
             Validator.TryValidateObject(creditCard, context, results);
             var errorMessage = results[0].ErrorMessage;
 
-            //assert
+            //Assert
             Assert.AreEqual(errorMessage, "CVV/CVC contains wrong symbols");
         }
 
@@ -133,7 +133,7 @@ namespace XsollaTestTask1Tests.ValidationTests.CreditCardValidation
         [TestCase("07896577094578095470954790479")]
         public void CVVWrongNumbersCount(string cvv)
         {
-            //arrange
+            //Arrange
             CreditCard creditCard = new CreditCard
             {
                 Number = "1111 2222 3333 4444",
@@ -145,11 +145,11 @@ namespace XsollaTestTask1Tests.ValidationTests.CreditCardValidation
             var context = new ValidationContext(creditCard);
             var results = new List<ValidationResult>();
 
-            //act
+            //Act
             Validator.TryValidateObject(creditCard, context, results);
             var errorMessage = results[0].ErrorMessage;
 
-            //assert
+            //Assert
             Assert.AreEqual(errorMessage, "CVV/CVC must have 3 symbols");
         }
     }

@@ -49,7 +49,7 @@ namespace XsollaTestTask1.Controllers
             Receipt receipt = new Receipt
             {
                 Id = Guid.NewGuid(),
-                CustomerName = info.card.HolderName,
+                CustomerName = info.Card.HolderName,
                 Product = paymentSession.PaymentAppointment,
                 OperationTime = DateTime.Now,
                 Seller = info.Seller,
@@ -62,7 +62,7 @@ namespace XsollaTestTask1.Controllers
 
             await SendNotificationToShop(receipt);
 
-            return Ok($"Congratulations, {info.card.HolderName}, you are a happy owner of {paymentSession.PaymentAppointment}!");
+            return Ok($"Congratulations, {info.Card.HolderName}, you are a happy owner of {paymentSession.PaymentAppointment}!");
         }
 
         private async Task SendNotificationToShop(Receipt receipt)

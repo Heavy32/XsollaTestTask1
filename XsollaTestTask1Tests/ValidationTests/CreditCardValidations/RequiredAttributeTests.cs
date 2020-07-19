@@ -7,16 +7,16 @@ namespace XsollaTestTask1Tests.ValidationTests.Tests
 {
     public class RequiredAttributeTests
     {
-        [Test, TestCaseSource("Cards")]
+        [TestCaseSource("Cards")]
         public void EmptyRequiredProperties(CreditCard creditCard)
         {
-            //arrange
+            //Arrange
             var context = new ValidationContext(creditCard, null, null);
 
-            //act
+            //Act
             var result = Validator.TryValidateObject(creditCard, context, null);
 
-            //asser
+            //Assert
             Assert.IsFalse(result);
         }
 

@@ -130,16 +130,14 @@ namespace XsollaTestTask1Tests.ControllerTests
 
             var paymentInfo = new PaymentInputInfo 
             { 
-                card = card, 
+                Card = card, 
                 SessionId = new Guid("ebd21f99-46a5-438f-8d6c-7e0a259b278e"),
                 Seller = "www.google.com"
             };
 
-
             //Act
             await controller.PayByCreditCard(paymentInfo);
             var count = context.Receipts.Count();
-
 
             //Assert
             Assert.AreEqual(1, count);
@@ -175,15 +173,13 @@ namespace XsollaTestTask1Tests.ControllerTests
 
             var paymentInfo = new PaymentInputInfo
             {
-                card = card,
+                Card = card,
                 SessionId = new Guid("ebd21f99-46a5-438f-8d6c-7e0a259b278e"),
             };
-
 
             //Act
             var response = await controller.PayByCreditCard(paymentInfo);
             var count = context.Receipts.Count();
-
 
             //Assert
             Assert.AreEqual(0, count);
