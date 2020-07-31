@@ -49,9 +49,9 @@ namespace XsollaTestTask1
                 });
 
             services.AddControllers();
-            services
-                .AddDbContext<PaymentDbContext>(options
-                    => options.UseSqlServer(Configuration.GetConnectionString("PaymentContext")));  
+
+            services.AddDbContext<PaymentDbContext>(options
+                    => options.UseInMemoryDatabase("PaymentDB"));  
 
             services.AddSwaggerGen(config =>
             {
