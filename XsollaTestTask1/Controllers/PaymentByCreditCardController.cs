@@ -65,7 +65,7 @@ namespace XsollaTestTask1.Controllers
             return Ok($"Congratulations, {info.Card.HolderName}, you are a happy owner of {paymentSession.PaymentAppointment}!");
         }
 
-        private async void SendNotificationToShop(Receipt receipt)
+        private async Task SendNotificationToShop(Receipt receipt)
         {
             var url = receipt.Seller;
             HttpClient client = new HttpClient();
