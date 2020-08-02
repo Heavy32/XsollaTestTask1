@@ -49,6 +49,7 @@ namespace XsollaTestTask1
                 });
 
             services.AddControllers();
+
             services
                 .AddDbContext<PaymentDbContext>(options
                     => options.UseSqlServer(Configuration.GetConnectionString("PaymentContext")));  
