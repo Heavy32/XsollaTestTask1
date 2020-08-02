@@ -52,7 +52,6 @@ namespace XsollaTestTask1
 
             services.AddDbContext<PaymentDbContext>(options
                     => options.UseInMemoryDatabase("PaymentDB"));
-            //ss
 
             services.AddSwaggerGen(config =>
             {
