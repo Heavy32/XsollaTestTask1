@@ -38,50 +38,18 @@ namespace XsollaTestTask1.Controllers
         [ProducesResponseType(400)]
         [ProducesResponseType(200)]
         public async Task<ActionResult> PayByCreditCard(PaymentInputInfo info)
-        {            
-            var paymentSession = await context.PaymentSessions.FirstOrDefaultAsync(session => session.SessionId == info.SessionId);
-
-            if(paymentSession.SessionRegistrationTime.AddMinutes(paymentSession.LifeSpanInMinute) < DateTime.Now)
-            {            
-                return BadRequest("Payment session is out of time");
-            }
-
-            Receipt receipt = new Receipt
-            {
-                Id = Guid.NewGuid(),
-                CustomerName = info.Card.HolderName,
-                Product = paymentSession.PaymentAppointment,
-                OperationTime = DateTime.Now,
-                Seller = info.Seller,
-                Cost = paymentSession.Cost              
-            };
-
-            context.PaymentSessions.Remove(paymentSession);
-            context.Receipts.Add(receipt);
-            await context.SaveChangesAsync();
-
-            await SendNotificationToShop(receipt);
-
-            return Ok($"Congratulations, {info.Card.HolderName}, you are a happy owner of {paymentSession.PaymentAppointment}!");
-        }
-
-        private async Task SendNotificationToShop(Receipt receipt)
         {
-            var url = receipt.Seller;
-            HttpClient client = new HttpClient();
-
-            var values = new Dictionary<string, string>
-            {
-                { "Customer", receipt.CustomerName },
-                { "ProductSold", receipt.Product }
+            IPayment paymentByCreditCard = new PaymentByCreditCard 
+            { 
+                Context = context,
+                Info = info
             };
+            paymentByCreditCard.PaymentStep();
 
-            var content = new FormUrlEncodedContent(values);
+            SendNotificationDecorator sendNotification = new SendNotificationDecorator(paymentByCreditCard);
+            sendNotification.PaymentStep();
 
-            if (Uri.TryCreate(url, UriKind.Absolute, out Uri uri))
-            {
-                await client.PostAsync(uri, content);
-            }
+            return Ok();
         }
     }
 }
