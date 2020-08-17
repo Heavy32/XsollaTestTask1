@@ -53,6 +53,7 @@ namespace XsollaTestTask1
             services.AddDbContext<PaymentDbContext>(options
                     => options.UseInMemoryDatabase("PaymentDB"));
 
+
             services.AddSwaggerGen(config =>
             {
                 config.SwaggerDoc("v1", new OpenApiInfo { Version = "v1", Title = "TestTask1" });
